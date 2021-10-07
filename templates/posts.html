@@ -1,14 +1,30 @@
 {% extends 'base.html' %} {% block content %}{% load static %}
 
 <section class="content">
+  <div class="header">
+    <img src="/static/img/twitter.png" class="logo" />
+    <a href="#">Home</a>
+  </div>
   <section class="post_form">
-    <form action="/" method="POST">
+    <!-- <form action="/" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <input type="text" name="name" placeholder="Name" required /><br />
-      <textarea name="body" placeholder="Tell us anything" required></textarea
-      ><br />
-      <input type="submit" value="Post" />
+    
+
+  <input type="text" name="name" placeholder="Name" required /><br />
+      <textarea name="body" placeholder="What's happening" required></textarea>
+      <input id="uploadfile" type="file" value="Choose File" />
+      <div class="tweet">
+        <input id="btn" type="submit" value="Tweet" />
+      </div>
+    </form> -->
+    <form action="/" method="POST" enctype="multipart/form-data">
+      {%csrf_token %}
+      <input type="text" name="name" placeholder="Name" required />
+      <input name="body" rows="3" placeholder="What's happening" required></input>
+      <input id= "uploadfile" type="file" name="image" />
+      <input id = "btn"type="submit" value="Tweet" />
     </form>
+
   </section>
   <section class="posts">
     <ul>
@@ -16,6 +32,7 @@
       <li>
         <img class="menu_icon js-menu-icon" src="{% static 'img/menu.png' %}" />
         <div class="menu">
+          <a href="edit/{{post.id}}">edit</a><br />
           <a href="delete/{{ post.id }}">delete</a>
         </div>
 
@@ -27,6 +44,15 @@
           <div class="datetime">{{post.created_at}} <br /></div>
           <p>{{post.body}} <br /></p>
           <!-- <a href="/delete/{{ post.id }}/">delete</a> -->
+          <!-- {% if post.image.url %} -->
+          <img class="Image" src="{{post.image.url}}" style="height: 350px" />
+          <!-- {% endif %} -->
+          <div>
+            <a href="/like/{{post.id}}/">
+              <img src="/static/img/heart.png" style="width: 30px" />
+            </a>
+            {{post.like_count}}
+          </div>
         </div>
       </li>
       {% endfor %}
